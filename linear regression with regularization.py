@@ -50,6 +50,14 @@ Xtrain_bias[::,3:5] = Xtrain2
 Xtrain_bias[::,-1:] = Xtrain3
 Mintheta = np.ones((1,6))
 MinCost=np.zeros((1,1))
+pertheta = np.ones((1,6))
+pertheta[0,0] = Theta[0,0]
+pertheta[0,1] = Theta[0,1]
+pertheta[0,2] = Theta[0,2]
+pertheta[0,3] = Theta[0,3]
+pertheta[0,4] = Theta[0,4]
+pertheta[0,5] = Theta[0,5]
+minlamda = np.zeros((1,1))
 def cost(X_bias,Y,Theta):
     np.seterr(over='raise')
     hypothesis = X_bias.dot(Theta.transpose())
@@ -83,6 +91,7 @@ def gradientDescent(X_bias,Y,Theta,iterations,alpha,lamda):
         Mintheta[0,4] = Theta[0,4]
         Mintheta[0,5] = Theta[0,5]
         MinCost[0,0] = costi
+        minlamda[0,0]=lamda
     elif costi < MinCost[0,0] :
         Mintheta[0, 0] = Theta[0, 0]
         Mintheta[0, 1] = Theta[0, 1]
@@ -91,6 +100,7 @@ def gradientDescent(X_bias,Y,Theta,iterations,alpha,lamda):
         Mintheta[0, 4] = Theta[0, 4]
         Mintheta[0, 5] = Theta[0, 5]
         MinCost[0,0] = costi
+        minlamda[0,0] = lamda
     """plt.plot(np.linspace(1,iterations,iterations,endpoint=True),cost_log)
     plt.title("Iteration vs Cost graph ")
     plt.xlabel("Number of iteration")
@@ -103,7 +113,7 @@ alpha = 0.3
 iterations = m
 lamda = 0.2
 while lamda < 10000 :
-    Theta = gradientDescent(X_bias,Y,Theta,iterations,alpha,lamda)
+    Theta = gradientDescent(X_bias,Y,pertheta,iterations,alpha,lamda)
     lamda = lamda*2
 i = 1;
 Theta[0, 0] = Mintheta[0, 0]
@@ -113,6 +123,7 @@ Theta[0, 3] = Mintheta[0, 3]
 Theta[0, 4] = Mintheta[0, 4]
 Theta[0, 5] = Mintheta[0, 5]
 mini = 0
+print(minlamda)
 print(Theta)
 Xtrain_predict = Xtrain_bias
 Xtrain_predict[:,1:2] = (Xtrain_predict[:,1:2] - mean_size) / (size_std)
