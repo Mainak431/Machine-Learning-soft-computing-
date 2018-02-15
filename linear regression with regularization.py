@@ -50,15 +50,24 @@ Xtrain_bias[::,3:5] = Xtrain2
 Xtrain_bias[::,-1:] = Xtrain3
 Mintheta = np.ones((1,6))
 MinCost=np.zeros((1,1))
+pertheta = np.ones((1,6))
+pertheta[0,0] = Theta[0,0]
+pertheta[0,1] = Theta[0,1]
+pertheta[0,2] = Theta[0,2]
+pertheta[0,3] = Theta[0,3]
+pertheta[0,4] = Theta[0,4]
+pertheta[0,5] = Theta[0,5]
 minlamda = np.zeros((1,1))
-def cost(X_bias,Y,Theta):
+def cost(X_bias,Y,Theta,lamda):
     np.seterr(over='raise')
     hypothesis = X_bias.dot(Theta.transpose())
-    return (1/(2.0*m))*((np.square(hypothesis-Y)).sum(axis=0))
+    return (1/(2.0*m))*lamda*((np.square(hypothesis-Y)).sum(axis=0))
+
+
 def gradientDescent(X_bias,Y,Theta,iterations,alpha,lamda):
     count = 1
     gradientDescent.c += 1
-    cost_log = np.array([])
+    cost_logi = np.array([])
     Theta = Theta*(1-lamda*alpha/m)
     while(count <= iterations):
         hypothesis = X_bias.dot(Theta.transpose())
@@ -74,8 +83,9 @@ def gradientDescent(X_bias,Y,Theta,iterations,alpha,lamda):
         Theta[0,3] = temp3
         Theta[0,4] = temp4
         Theta[0,5] = temp5
-        costi = +cost(X_bias,Y,Theta)
+        costi = +cost(X_bias,Y,Theta,lamda)
         count = count + 1
+        cost_logi = np.append(cost_logi, cost(X_bias, Y, Theta,lamda))
     if gradientDescent.c == 1 :
         Mintheta[0,0] = Theta[0,0]
         Mintheta[0,1] = Theta[0,1]
@@ -94,7 +104,7 @@ def gradientDescent(X_bias,Y,Theta,iterations,alpha,lamda):
         Mintheta[0, 5] = Theta[0, 5]
         MinCost[0,0] = costi
         minlamda[0,0] = lamda
-    """plt.plot(np.linspace(1,iterations,iterations,endpoint=True),cost_log)
+    """plt.plot(np.linspace(1,iterations,iterations,endpoint=True),cost_logi)
     plt.title("Iteration vs Cost graph ")
     plt.xlabel("Number of iteration")
     plt.ylabel("Cost of Theta")
@@ -105,8 +115,8 @@ gradientDescent.c = 0
 alpha = 0.3
 iterations = m
 lamda = 0.2
-while lamda < 10000 :
-    Theta = gradientDescent(X_bias,Y,Theta,iterations,alpha,lamda)
+while lamda < 1000000 :
+    Theta = gradientDescent(X_bias,Y,pertheta,iterations,alpha,lamda)
     lamda = lamda*2
 i = 1;
 Theta[0, 0] = Mintheta[0, 0]
@@ -179,4 +189,27 @@ X_predict[3] = (X_predict[3] - mean_sizesq)/(sizesq_std)
 X_predict[4] = (X_predict[4]) - mean_bedroomsq/(bedroomsq_std)
 X_predict[5] = (X_predict[5]) - mean_both/(both_std)
 hypothesis = X_predict.dot(T.transpose())
-print ("Cost of house with {0} sq ft and {1} bedroom is {2}".format(a,b,hypothesis))
+print ("Cost of house with {0} sq ft and {1} bedroom is {2}$".format(a,b,hypothesis))
+print("Prediction Percentage")
+while(1):
+    tol = np.zeros((1,1))
+    tol[0,0]=input("Enter tolerance is $")
+    co = 0;
+    for i in range(47):
+        Y = data[i:i+1, -1:]
+        X_predict[1]=data[i:i+1,0:1]
+        X_predict[2]=data[i:i+1,1:2]
+        X_predict[3] = a * a
+        X_predict[4] = b * b
+        X_predict[5] = a * b
+        X_predict[1] = (X_predict[1] - mean_size) / (size_std)
+        X_predict[2] = (X_predict[2] - mean_bedroom) / (bedroom_std)
+        X_predict[3] = (X_predict[3] - mean_sizesq) / (sizesq_std)
+        X_predict[4] = (X_predict[4]) - mean_bedroomsq / (bedroomsq_std)
+        X_predict[5] = (X_predict[5]) - mean_both / (both_std)
+        hypothesis = X_predict.dot(T.transpose())
+        dif = np.abs(Y-hypothesis)
+        if dif < tol:
+            co = co+1
+    res = co/0.47
+    print(res)
