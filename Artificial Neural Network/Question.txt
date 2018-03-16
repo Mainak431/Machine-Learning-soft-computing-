@@ -1,1 +1,2 @@
-Write a code to make a perceptron learn the AND,NOR,OR,NAND logic using rosenblatt percentron learning rule.
+Write a code to make a perceptron to learn the AND,NOR,OR,NAND logic using rosenblatt percentron learning rule.
+Write a code to make a multilayer perceptron to learn XOR gate using backpropagation algorithm(XOR gates output are non-linear)
