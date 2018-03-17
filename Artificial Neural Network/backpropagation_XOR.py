@@ -75,7 +75,7 @@ while(1):
         y1 = y1 + dely1
         e += ((error)**2)
     print(e)
-    if (e < 0.005) :
+    if (e < 0.001) :
         break
 print(w)
 output1 = sigmoid(w[4]*sigmoid(w[0]*1+w[1]*0 - y1) + w[5]*sigmoid(w[2]*1+w[3]*0 - y2)-y3)
