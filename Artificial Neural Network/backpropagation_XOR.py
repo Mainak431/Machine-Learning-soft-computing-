@@ -1,8 +1,5 @@
 import numpy
 import itertools
-#the algorithm is designed for generalized n input XOR gate
-#only the testing is shown for two input XOR gate
-#the model has 3 layers, one hidden layer, which contains two perceptrons
 def sigmoid(x):
     return 1/(1 + numpy.exp(-x))
 def RELU(x) :
@@ -78,7 +75,13 @@ while(1):
     if (e < 0.001) :
         break
 print(w)
+output1 = sigmoid(w[4]*sigmoid(w[0]*0+w[1]*0 - y1) + w[5]*sigmoid(w[2]*0+w[3]*0 - y2)-y3)
+print(output1)
+output1 = sigmoid(w[4]*sigmoid(w[0]*0+w[1]*1 - y1) + w[5]*sigmoid(w[2]*0+w[3]*1 - y2)-y3)
+print(output1)
 output1 = sigmoid(w[4]*sigmoid(w[0]*1+w[1]*0 - y1) + w[5]*sigmoid(w[2]*1+w[3]*0 - y2)-y3)
+print(output1)
+output1 = sigmoid(w[4]*sigmoid(w[0]*1+w[1]*1 - y1) + w[5]*sigmoid(w[2]*1+w[3]*1 - y2)-y3)
 print(output1)
 
 
