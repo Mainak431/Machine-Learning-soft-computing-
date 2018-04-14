@@ -40,11 +40,11 @@ Y = target
 X_train, X_test, y_train, y_test = train_test_split(X_data, Y, test_size=0.5, random_state=42)
 # rvf svc kernel
 #uncomment to reduce the train data and test data size
-X_train,X_test,y_train,y_test = train_test_split(X_train,y_train,test_size= 0.5,random_state=42)
-X_train,X_test,y_train,y_test = train_test_split(X_train,y_train,test_size= 0.5,random_state=42)
-X_train,X_test,y_train,y_test = train_test_split(X_train,y_train,test_size= 0.5,random_state=42)
-X_train,X_test,y_train,y_test = train_test_split(X_train,y_train,test_size= 0.5,random_state=42)
-X_train,X_test,y_train,y_test = train_test_split(X_train,y_train,test_size= 0.5,random_state=42)
+#X_train,X_test,y_train,y_test = train_test_split(X_train,y_train,test_size= 0.5,random_state=42)
+#X_train,X_test,y_train,y_test = train_test_split(X_train,y_train,test_size= 0.5,random_state=42)
+#X_train,X_test,y_train,y_test = train_test_split(X_train,y_train,test_size= 0.5,random_state=42)
+#X_train,X_test,y_train,y_test = train_test_split(X_train,y_train,test_size= 0.5,random_state=42)
+#X_train,X_test,y_train,y_test = train_test_split(X_train,y_train,test_size= 0.5,random_state=42)
 param_C = 5
 param_gamma = 0.05
 classifier = svm.SVC(kernel='poly', C=param_C,gamma=param_gamma)
@@ -60,6 +60,7 @@ cm = metrics.confusion_matrix(expected, predicted)
 print("Confusion matrix:\n%s" % cm)
 # accuracy calculation
 print("Accuracy={}".format(metrics.accuracy_score(expected, predicted)))
+#prediction for the taken image
 img = img.reshape(1,-1)
 y = target[rand]
 predicted = classifier.predict(img)
